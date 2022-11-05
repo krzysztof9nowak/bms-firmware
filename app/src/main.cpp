@@ -7,6 +7,8 @@
 #ifndef UNIT_TEST
 
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
+
 
 #include <stdio.h>
 
@@ -23,6 +25,10 @@ LOG_MODULE_REGISTER(bms_main, CONFIG_LOG_DEFAULT_LEVEL);
 Bms bms;
 
 extern ThingSet ts;
+
+
+static const struct gpio_dt_spec led_chg = GPIO_DT_SPEC_GET(DT_ALIAS(led_green), gpios);
+
 
 int main(void)
 {
@@ -41,9 +47,13 @@ int main(void)
         k_sleep(K_MSEC(10000));
     }
 
+
+    if (!device_is_ready(led_chg.port)) {
+        return 0;
+    }
+
+
     float x = bms.conf.cell_ov_limit * 2000;
-
-
     printf("%f\n", x);
 
     bms_apply_cell_ovp(&bms);
@@ -73,7 +83,17 @@ int main(void)
             k_sleep(K_MSEC(10000));
         }
 
-        // bms_print_registers();
+//         bms_print_registers();
+        printf("Connected cells: %d\n", bms.status.connected_cells);
+
+        for(int i =0;i<BOARD_NUM_CELLS_MAX;i++){
+            printf("%d: %fV\n", i, bms.status.cell_voltages[i]);
+        }
+
+        printf("Pack voltage: %f\n", bms.status.pack_voltage);
+        printf("Current: %f\n", bms.status.pack_current);
+        printf("Flags %x\n", bms.status.error_flags);
+        printf("temp_min: %f temp_max: %f\n", bms.status.bat_temp_min, bms.status.bat_temp_max);
 
         eeprom_update();
 

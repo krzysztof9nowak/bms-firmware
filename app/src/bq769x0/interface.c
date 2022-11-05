@@ -35,6 +35,8 @@ static int i2c_address = DT_REG_ADDR(BQ769X0_NODE);
 static bool crc_enabled; // determined automatically
 
 static const struct gpio_dt_spec alert = GPIO_DT_SPEC_GET(BQ769X0_NODE, alert_gpios);
+static const struct gpio_dt_spec ts1 = GPIO_DT_SPEC_GET(BQ769X0_NODE, ts1_gpios);
+
 static struct gpio_callback alert_cb;
 
 // The bq769x0 drives the ALERT pin high if the SYS_STAT register contains
@@ -150,9 +152,18 @@ int bq769x0_init()
         return -ENODEV;
     }
 
+    if (!device_is_ready(ts1.port)) {
+        return -ENODEV;
+    }
+
     gpio_pin_configure_dt(&alert, GPIO_INPUT);
     gpio_init_callback(&alert_cb, bq769x0_alert_isr, BIT(alert.pin));
     gpio_add_callback(alert.port, &alert_cb);
+
+    gpio_pin_configure_dt(&ts1, GPIO_OUTPUT);
+    gpio_pin_set_dt(&ts1, true);
+    k_sleep(K_MSEC(5));
+    gpio_pin_configure_dt(&ts1, GPIO_INPUT);
 
     if (!device_is_ready(i2c_dev)) {
         LOG_ERR("I2C device not ready");

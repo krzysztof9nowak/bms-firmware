@@ -320,8 +320,11 @@ void shutdown()
 
 void thingset_auth()
 {
-    static const char pass_exp[] = CONFIG_THINGSET_EXPERT_PASSWORD;
-    static const char pass_mkr[] = CONFIG_THINGSET_MAKER_PASSWORD;
+//    static const char pass_exp[] = CONFIG_THINGSET_EXPERT_PASSWORD;
+//    static const char pass_mkr[] = CONFIG_THINGSET_MAKER_PASSWORD;
+
+static const char pass_exp[] = "AA";
+static const char pass_mkr[] = "BB";
 
     if (strlen(pass_exp) == strlen(auth_password)
         && strncmp(auth_password, pass_exp, strlen(pass_exp)) == 0)

@@ -3,4 +3,4 @@
 
 config BOARD_BMS_OLIVE
 	bool "Libre Solar BMS OLIVE"
-    depends on SOC_STM32F103XE
+    depends on SOC_STM32F103X8

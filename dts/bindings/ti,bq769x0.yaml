@@ -12,3 +12,7 @@ properties:
       type: phandle-array
       required: true
       description: Alert interrupt of bq769x0
+    ts1-gpios:
+      type: phandle-array
+      required: true
+      description: TS1 pin of bq769x0, used for wake up
