@@ -6,11 +6,15 @@
 
 #include "button.h"
 
-#ifndef UNIT_TEST
 
+#ifndef UNIT_TEST
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
+
+#ifdef CONFIG_PWR_BUTTON
+
+
 
 #define BTN_GPIO  DT_ALIAS(sw_pwr)
 #define BTN_CTLR  DT_GPIO_CTLR(BTN_GPIO, gpios)
@@ -43,5 +47,13 @@ bool button_pressed_for_3s()
 {
     return gpio_pin_get(btn_dev, BTN_PIN) == 1 && (k_uptime_get() - time_pressed) > 3000;
 }
+
+#else
+void button_init(){}
+
+
+bool button_pressed_for_3s(){return false;}
+
+#endif
 
 #endif /* UNIT_TEST */

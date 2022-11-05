@@ -41,6 +41,11 @@ int main(void)
         k_sleep(K_MSEC(10000));
     }
 
+    float x = bms.conf.cell_ov_limit * 2000;
+
+
+    printf("%f\n", x);
+
     bms_apply_cell_ovp(&bms);
     bms_apply_cell_uvp(&bms);
 

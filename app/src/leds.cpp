@@ -17,6 +17,8 @@ extern Bms bms;
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
 
+#ifdef CONFIG_LED
+
 #define LED_DIS_NODE DT_ALIAS(led_red)
 #define LED_CHG_NODE DT_ALIAS(led_green)
 
@@ -119,6 +121,16 @@ void leds_update()
 }
 
 K_THREAD_DEFINE(leds, 256, leds_update_thread, NULL, NULL, NULL, 4, 0, 0);
+
+#else
+
+void leds_chg_set(bool on)
+{}
+
+void leds_dis_set(bool on)
+{}
+
+#endif
 
 #else
 

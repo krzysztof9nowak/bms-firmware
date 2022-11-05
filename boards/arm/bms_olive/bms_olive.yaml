@@ -1,0 +1,16 @@
+identifier: bms_olive_defconfig
+name: BMS-OLIVE
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 20
+flash: 64
+supported:
+  - gpio
+  - i2c
+  - spi
+  - watchdog
+  - adc

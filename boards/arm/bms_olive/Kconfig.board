@@ -1,0 +1,6 @@
+# Copyright (c) The Libre Solar Project Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_BMS_OLIVE
+	bool "Libre Solar BMS OLIVE"
+    depends on SOC_STM32F103XE
